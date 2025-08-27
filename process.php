@@ -27,4 +27,17 @@ Step 6 Requirements:
   - Search functionality
 */
 
+
+// Step 3
+
+  $name = $_POST["name"];
+  $email = $_POST["email"];
+  $club = $_POST["club"];
+  echo "<h2>Registration Successful!</h2>";
+  echo "<p>Name: $name</p>";
+  echo "<p>Email: $email</p>";
+  echo "<p>Club: $club</p>";
+  
+// step 4
+
 ?>
