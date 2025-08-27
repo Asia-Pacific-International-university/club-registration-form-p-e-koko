@@ -28,9 +28,13 @@ Step 6 Requirements:
 */
 
 
-// Step 3
 
-  // Step 3 & 4: Process form data and validate
+  session_start();
+
+  // Initialize registrations array in session if not exists
+  if (!isset($_SESSION['registrations'])) {
+    $_SESSION['registrations'] = [];
+  }
 
   $name = trim($_POST["name"] ?? '');
   $email = trim($_POST["email"] ?? '');
@@ -56,10 +60,41 @@ Step 6 Requirements:
       echo "<p style='color:red;'>$error</p>";
     }
   } else {
+    // Store registration data in array
+    $registration = [
+      'name' => $name,
+      'email' => $email,
+      'club' => $club,
+      'timestamp' => date('Y-m-d H:i:s')
+    ];
+    
+    $_SESSION['registrations'][] = $registration;
+    
     echo "<h2>Registration Successful!</h2>";
     echo "<p>Name: $name</p>";
     echo "<p>Email: $email</p>";
     echo "<p>Club: $club</p>";
+  }
+
+  // Display all registrations
+  echo "<h2>All Registrations</h2>";
+  if (empty($_SESSION['registrations'])) {
+    echo "<p>No registrations yet.</p>";
+  } else {
+    echo "<table border='1' style='border-collapse: collapse; width: 100%;'>";
+    echo "<tr><th>Name</th><th>Email</th><th>Club</th><th>Registration Time</th></tr>";
+    
+    foreach ($_SESSION['registrations'] as $reg) {
+      echo "<tr>";
+      echo "<td>" . htmlspecialchars($reg['name']) . "</td>";
+      echo "<td>" . htmlspecialchars($reg['email']) . "</td>";
+      echo "<td>" . htmlspecialchars($reg['club']) . "</td>";
+      echo "<td>" . htmlspecialchars($reg['timestamp']) . "</td>";
+      echo "</tr>";
+    }
+    
+    echo "</table>";
+    echo "<p>Total registrations: " . count($_SESSION['registrations']) . "</p>";
   }
 
 ?>
